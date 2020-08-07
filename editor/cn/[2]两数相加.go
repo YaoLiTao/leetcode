@@ -28,27 +28,38 @@ type ListNode struct {
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	node := l1
-	ac := 0
-	for l1 != nil {
-		l1.Val = l1.Val + l2.Val + ac
-		if l1.Val >= 10 {
-			l1.Val = l1.Val - 10
-			ac = 1
-		} else {
-			ac = 0
-		}
-		temp := l1
-		l1 = l1.Next
-		l2 = l2.Next
-		if ac == 1 && temp.Next == nil {
-			temp.Next = &ListNode{
-				Val:  ac,
-				Next: nil,
-			}
-		}
+	l3 := &ListNode{
+		Val: 0,
+		Next: nil,
 	}
-	return node
+	res := l3
+	for l1 != nil || l2 != nil {
+		acc := 0
+		if l1 != nil {
+			l3.Val += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			l3.Val += l2.Val
+			l2 = l2.Next
+		}
+		if l3.Val >= 10 {
+			l3.Val -= 10
+			acc = 1
+		} else {
+			acc = 0
+		}
+
+		if l1 == nil && l2 == nil && acc == 0 {
+			break
+		}
+		l3.Next = &ListNode{
+			Val: acc,
+			Next: nil,
+		}
+		l3 = l3.Next
+	}
+	return res
 }
 
 //leetcode submit region end(Prohibit modification and deletion)
